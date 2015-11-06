@@ -3,15 +3,56 @@
 <head>
 	<title></title>
 	<style type="text/css">
+    .cf:before,
+    .cf:after {
+        content: " ";
+        display: table;
+    }
+
+    .cf:after {
+        clear: both;
+    }
+
+    .cf {
+        *zoom: 1;
+    }
+    body{
+        margin: 0;
+        padding: 0;
+    }
 	.container {
 		position: relative;
 	}
 	.container > * {
 		position: absolute;
 	}
+
+    #artList,
+    #roomList{
+        list-style: none;
+        width:300px;
+        clear:both;
+    }
+    #artList  li,
+    #roomList li{
+       display:inline-block;
+       float: left;
+       min-width: 137px;
+    }
+    #options{
+        position: fixed;
+        right:0;
+    }
 	</style>
 </head>
 <body>
+<div id="options">
+    <h2>Rooms</h2>
+    <ul id="roomList" class="room-list cf"></ul>
+    <br/>
+    <h2>Art</h2>
+    <ul id="artList" class="art-list cf"></ul>
+</div>
 	<div class="container">
 		<img src="floor_plan.jpg">
 		<canvas id="map" width="800" height="800"></canvas>		
