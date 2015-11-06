@@ -11,5 +11,8 @@
   "dependencies": {
     "euclideanmst": "0.0.4",
     "node-dijkstra": "^2.2.0"
+  },
+  "devDependencies": {
+    "jquery": "^2.1.4"
   }
 }
