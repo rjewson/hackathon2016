@@ -35,8 +35,6 @@ var graph = {
     '20':{'18':1}
 }
 
-var art = 
-
 function processArray(){
     pathChoiceArray.sort(function(a, b) {
         return a - b;
@@ -73,7 +71,7 @@ roomList.on('click','input[type="checkbox"]',function(e){
 
 });
 for (var room in graph ){
- var item =  roomList.append('<li><label>room '+(parseInt(room)+1)+'<input data-search-type="room" type="checkbox" value="'+room+'" /></label></li>')
+ var item =  roomList.append('<li><label>room '+(parseInt(room))+'<input data-search-type="room" type="checkbox" value="'+room+'" /></label></li>')
 
 }
 
@@ -86,6 +84,9 @@ function drawNodes() {
 			ctx.beginPath();
 			ctx.arc(vert[0],vert[1],3,0,Math.PI*2,true);
 			ctx.stroke();
+            ctx.fillStyle = "blue";
+            ctx.font = "bold 16px Arial";
+            ctx.fillText(i+'', vert[0]+8,vert[1]+5);
 		}
 
 }
@@ -94,7 +95,11 @@ function drawNodes() {
 function drawEverything(){
          ctx.clearRect(0, 0, 800, 800);
         drawNodes();
-        var path = sp.shortestPath(graph, from, to);
+        //var path = sp.shortestPath(graph, from, to);
+        var userPosition = 0; // hard coded for now
+        console.log(pathChoiceArray, "Selected points: ");
+        var path = sp.pathToNavigate(graph, verts, pathChoiceArray, userPosition);
+        path.shortestPath = path;
         if(path.shortestPath != null){
             for (var i = 1; i< path.shortestPath.length; i++) {
                 var last = verts[path.shortestPath[i-1]];
