@@ -2,6 +2,9 @@ var sp = require('./shortestPath.js');
 var $ = require('jquery');
 var canvas = document.getElementById('map');
 var ctx;
+var hours = $('#hours')
+var minutes = $('#minutes')
+var seconds = $('#seconds')
 if (canvas.getContext) {
     ctx = canvas.getContext('2d');
 }
@@ -35,16 +38,25 @@ var graph = {
     '20':{'18':1}
 }
 
+var calculatedTimeAddedInMinutes = [5, 6, 2, 4, 6, 5, 6, 5, 6, 3, 5, 3, 8, 9 , 6, 10, 8, 1, 8, 14];
+var selectedTimeAdded = ['00','00','00','00','00','00','00','00','00','00','00','00','00','00','00','00','00','00','00','00'];
+
 function processArray(){
     pathChoiceArray.sort(function(a, b) {
         return a - b;
     });
     from = pathChoiceArray[0];
     to = pathChoiceArray[pathChoiceArray.length - 1];
-    console.log(pathChoiceArray,"Shortest path from " + from + " to " + to + " is:");
+    //console.log(pathChoiceArray,"Shortest path from " + from + " to " + to + " is:");
     drawEverything();
 }
 
+function addPoint(val){
+    if(pathChoiceArray.indexOf(val) == -1){
+        pathChoiceArray.push(val);
+    }
+    processArray();
+}
 function addPoint(val){
     if(pathChoiceArray.indexOf(val) == -1){
         pathChoiceArray.push(val);
@@ -63,15 +75,22 @@ function removePoint(val){
 
 var roomList = $('#roomList');
 roomList.on('click','input[type="checkbox"]',function(e){
+    var val = parseInt(this.value)
     if(this.checked){
-        addPoint(parseInt(this.value));
-        return;
+        addPoint(val);
+        selectedTimeAdded[val] = calculatedTimeAddedInMinutes[val];
+
+    }else{
+        selectedTimeAdded[val] = '00';
+        removePoint(val);
     }
-    removePoint(parseInt(this.value));
+
+    updateTime();
+
 
 });
 for (var room in graph ){
- var item =  roomList.append('<li><label>room '+(parseInt(room))+'<input data-search-type="room" type="checkbox" value="'+room+'" /></label></li>')
+ var item =  roomList.append('<li><label>Artwork '+(parseInt(room)+1)+'<input data-search-type="room" type="checkbox" value="'+room+'" /></label></li>')
 
 }
 
@@ -86,7 +105,7 @@ function drawNodes() {
 			ctx.stroke();
             ctx.fillStyle = "blue";
             ctx.font = "bold 16px Arial";
-            ctx.fillText(i+'', vert[0]+8,vert[1]+5);
+            ctx.fillText((i+1)+'', vert[0]+8,vert[1]+5);
 		}
 
 }
@@ -97,7 +116,7 @@ function drawEverything(){
         drawNodes();
         //var path = sp.shortestPath(graph, from, to);
         var userPosition = 0; // hard coded for now
-        console.log(pathChoiceArray, "Selected points: ");
+       // console.log(pathChoiceArray, "Selected points: ");
         var path = sp.pathToNavigate(graph, verts, pathChoiceArray, userPosition);
         path.shortestPath = path;
         if(path.shortestPath != null){
@@ -119,7 +138,42 @@ function drawEverything(){
             }
         }
 }
+
+function getTimeRemaining(time){
+    var t = time * 60 * 1000;
+    var seconds = Math.floor( (t/1000) % 60 );
+    var minutes = Math.floor( (t/1000/60) % 60 );
+    var hours = Math.floor( (t/(1000*60*60)) % 24 );
+    var days = Math.floor( t/(1000*60*60*24) );
+    return {
+        'total': t,
+        'days': days,
+        'hours': hours,
+        'minutes': minutes,
+        'seconds': seconds
+    };
+}
+
+function updateTime(){
+    var count=0;
+    for (var i=selectedTimeAdded.length; i--;) {
+        var item = selectedTimeAdded[i]
+        if(item == '00'){
+            item = 0;
+        }
+        count+= item;
+    }
+
+    var d = getTimeRemaining(count);
+    console.log(d);
+    hours.text(d.hours < 10 ? '0'+ d.hours : d.hours);
+    minutes.text(d.minutes < 10 ? '0'+ d.minutes : d.minutes)
+    seconds.text(d.seconds < 10 ? '0'+ d.seconds : d.seconds)
+
+}
+
 //drawNodes();
+updateTime();
 drawEverything();
 
 // Edit mode
