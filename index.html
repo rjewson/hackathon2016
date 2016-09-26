@@ -19,6 +19,7 @@
     body{
         margin: 0;
         padding: 0;
+        font-family: sans-serif;
     }
 	.container {
 		position: relative;
@@ -40,18 +41,81 @@
        min-width: 137px;
     }
     #options{
-        position: fixed;
+        position: absolute;
         right:0;
+        top:25%;
     }
+    #header{
+        width:100%;
+        position: relative;
+        background:#d55140;
+        /*height:75px;*/
+    }
+    #header{
+        color:white;
+    }
+    #header > img{
+        display:block;
+        padding:20px;
+    }
+    #timeDisplay{
+        padding: 0px;
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin-right: 20px;
+
+    }
+        #clockdiv > div{
+            display: inline-block;
+            font-size: 72px;
+
+
+
+        }
+        #clockdiv div:first-child{
+            font-size: 30px;
+            position: relative;
+            top: -15px;
+            left:-30px;
+        }
+        .smalltext{
+            display:inline;
+        }
+
 	</style>
 </head>
 <body>
+<div id="header">
+    <img src="rijksmuseum-logo-combined.png" width="300">
+    <div id="timeDisplay">
+        <div id="clockdiv">
+            <div>
+                Total Journey Time:
+            </div>
+
+
+            <div>
+                <span id="hours"></span>
+                <div class="smalltext">:</div>
+            </div>
+            <div>
+                <span id="minutes"></span>
+                <div class="smalltext">:</div>
+            </div>
+            <div>
+                <span id="seconds"></span>
+
+            </div>
+    </div>
+
+
+    </div>
+</div>
 <div id="options">
-    <h2>Rooms</h2>
+    <h2>Artworks</h2>
     <ul id="roomList" class="room-list cf"></ul>
     <br/>
-    <h2>Art</h2>
-    <ul id="artList" class="art-list cf"></ul>
 </div>
 	<div class="container">
 		<img src="floor_plan.jpg">
